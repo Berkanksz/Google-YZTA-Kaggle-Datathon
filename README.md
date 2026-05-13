@@ -4,18 +4,9 @@ This repository contains two modeling files prepared for the YZTA 2026 Datathon 
 
 ## Files
 
-- `final_solution.ipynb`: Main notebook used for the final approach. It uses external public data, nearest-neighbor source matching, candidate selection, ranking, and final blending.
+
 - `Second_Submission.py`: Earlier standalone Python pipeline using CatBoost, LightGBM, Ridge, cross-validation, and weighted ensembling.
 
-## Approach
-
-The final notebook focuses on the provided competition data and an allowed external sleep performance dataset. The main steps are:
-
-1. Map external dataset columns and categories to the competition schema.
-2. Find the closest external source candidates for each competition row.
-3. Build proxy and candidate-level features from the top matches.
-4. Train CatBoost and LightGBM models with cross-validation.
-5. Blend validated model outputs and generate `submission.csv`.
 
 ## Requirements
 
@@ -41,11 +32,7 @@ Data files are not included in this repository.
 
 ## Running
 
-For the final solution, run:
 
-```bash
-jupyter notebook final_solution.ipynb
-```
 
 For the earlier standalone pipeline, run:
 

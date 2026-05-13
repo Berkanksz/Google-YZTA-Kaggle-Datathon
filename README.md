@@ -24,11 +24,6 @@ The competition files are required:
 - `test_x.csv`
 - `sample_submission.csv`
 
-The final notebook also expects the external file:
-
-- `sleep_health_dataset.csv`
-
-Data files are not included in this repository.
 
 ## Running
 
@@ -40,7 +35,7 @@ For the earlier standalone pipeline, run:
 python Second_Submission.py
 ```
 
-Both workflows generate a Kaggle-compatible `submission.csv`.
+workflow generate a Kaggle-compatible `submission.csv`.
 
 ## Notes
 

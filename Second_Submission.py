@@ -18,6 +18,7 @@ from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import OneHotEncoder
 
 
+# Yarışmanın hedef ve çıktı ayarları.
 TARGET = "bilissel_performans_skoru"
 ID_COL = "id"
 N_SPLITS = 5
@@ -25,6 +26,8 @@ RANDOM_STATE = 42
 OUTPUT_PATH = "submission.csv"
 
 
+
+# Kaggle ve lokal ortamda aynı kodu çalıştırmak için dosya arar.
 def find_file(filename):
     """Find files both on Kaggle and in the local workspace."""
     roots = ["/kaggle/input", ".", "/Users/berkanoksuz/Desktop/KaggleGoogle Codex"]
@@ -41,6 +44,8 @@ def rmse(y_true, y_pred):
     return mean_squared_error(y_true, np.clip(y_pred, 0, 10)) ** 0.5
 
 
+
+# CatBoost kategorik değişkenleri string olarak doğrudan kullanır.
 def prepare_catboost(train_df, valid_df, cat_cols):
     train_df = train_df.copy()
     valid_df = valid_df.copy()
@@ -70,6 +75,8 @@ def prepare_lightgbm(train_df, valid_df, cat_cols):
     return train_df, valid_df
 
 
+
+# Her model OOF tahmin ve test tahmini üretir.
 def fit_catboost_model(name, params, X, y, X_test, cat_cols, folds):
     oof = np.zeros(len(X))
     test_pred = np.zeros(len(X_test))
@@ -167,6 +174,8 @@ def fit_ridge_model(name, X, y, X_test, cat_cols, num_cols, folds):
     return oof, test_pred
 
 
+
+# OOF tahminlerden pozitif ağırlıklı final blend öğrenilir.
 def learn_blend_weights(model_names, oof_predictions, y):
     clipped_oof = np.column_stack([np.clip(oof_predictions[name], 0, 10) for name in model_names])
     blender = LinearRegression(positive=True, fit_intercept=False)
@@ -211,6 +220,7 @@ def main():
         "thread_count": -1,
     }
 
+    # Farklı model ailelerinin tahminleri burada toplanır.
     model_outputs = {}
     test_outputs = {}
 
@@ -277,6 +287,7 @@ def main():
     model_names = list(model_outputs)
     weights = learn_blend_weights(model_names, model_outputs, y)
 
+    # Öğrenilen ağırlıklarla final submission tahmini hazırlanır.
     final_pred = np.zeros(len(X_test))
     for name in model_names:
         final_pred += weights[name] * np.clip(test_outputs[name], 0, 10)
